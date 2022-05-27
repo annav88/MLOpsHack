@@ -26,6 +26,9 @@ jobs:
         
 #- name: run workflow 
 #   run: python job.py
+    
+    - name: Install Azure ML Extention
+      run: az extension add -n ml -y
 
     - name: Attach Workspace
       run: az ml folder attach -w mlw-dev-mlops -g churn-dev-rg
