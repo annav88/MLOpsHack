@@ -31,7 +31,7 @@ jobs:
       run: az extension add -n ml -y
 
     - name: Attach Workspace
-      run: az ml folder attach -w mlw-dev-mlops -g churn-dev-rg
+      run: az configure --defaults group="churn-dev-rg" workspace="mlw-dev-mlops"
       
     - name: Run Pipeline
       run: az ml run submit-pipeline -n myproject-pipeline -y archive/archive/empty-pipeline.yml
