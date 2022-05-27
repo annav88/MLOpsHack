@@ -34,5 +34,5 @@ jobs:
       run: az configure --defaults group="churn-dev-rg" workspace="mlw-dev-mlops"
       
     - name: Run Pipeline
-      run: az ml job create --file src/archive/empty-pipeline.yml --resource-group churn-dev-rg --workspace-name mlw-dev-mlops
+      run: az ml job create --file archive/solution/empty-pipeline.yml --resource-group churn-dev-rg --workspace-name mlw-dev-mlops
 
