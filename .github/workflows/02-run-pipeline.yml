@@ -1,19 +1,31 @@
-name: Run Pipeline
+name: Run a pipeline
 
 on:
   workflow_dispatch:
-
+ 
 jobs:
   build:
     runs-on: ubuntu-latest 
     steps:
-    - name: check out repo
+    - name: Check out repo
       uses: actions/checkout@v2
-    - name: azure login
+      
+    - name: Configure Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.7' 
+      
+      - name: Install necessary libraries
+        run: |
+          python -m pip install --upgrade pip
+          
+    - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: attach workspace
+        
+    - name: Attach Workspace
       run: az ml folder attach -w mlw-dev-mlops -g churn-dev-rg
-    - name: run pipeline
-      run: az ml run submit-pipeline -n myproject-pipeline -y 02-actions_sample_pipeline.yml
+      
+    - name: Run Pipeline
+      run: az ml run submit-pipeline -n myproject-pipeline -y archive/archive/empty-pipeline.yml
