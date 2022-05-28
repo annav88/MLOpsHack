@@ -1,0 +1,51 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Challenge 3 - Run AML Pipeline on Push
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:    
+      - 'main'
+      
+# Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v3
+
+    - name: Configure Python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: "3.8"
+
+    - name: Install libraries
+      run: pip install azureml-core
+      
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+        
+#- name: run workflow 
+#   run: python job.py
+    
+    - name: Install Azure ML Extention
+      run: az extension add -n ml -y
+
+    - name: Attach Workspace
+      run: az configure --defaults group="churn-dev-rg" workspace="mlw-dev-mlops"
+      
+    - name: Run Pipeline
+      run: az ml job create --file archive/solution/pipeline.yml --resource-group churn-dev-rg --workspace-name mlw-dev-mlops
+
+
